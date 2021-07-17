@@ -12,11 +12,18 @@ import scipy
 from scipy.signal import find_peaks
 import sys
 
+# # # create output directory # # #
+import os
+directory = "output"
+if not os.path.exists(directory):
+    os.makedirs(directory)
+
 # # # user inputs # # #
-    #1st param = video path
-    #2nd param = minumum
-    #3rd param = maximum
-if len(sys.argv)> 2:
+#1st param = video path
+#2nd param = output path
+#3rd param = minumum
+#4th param = maximum
+if len(sys.argv)> 3:
     range_param=True
 else:
     range_param=False
@@ -24,7 +31,12 @@ cap = cv2.VideoCapture(sys.argv[1])
 fps = cap.get(cv2.CAP_PROP_FPS)
 totalNoFrames = cap.get(cv2.CAP_PROP_FRAME_COUNT);
 durationInSeconds = float(totalNoFrames) / float(fps)
+output_path=sys.argv[2]
+import os
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
 
+# # # get coordinates of Regions of Interest from user input # # #
 cap.set(cv2.CAP_PROP_POS_MSEC,20)      # Go to the 1 sec. position
 ret,im = cap.read()                   # Retrieves the frame at the specified second
 # Select ROI
@@ -47,8 +59,8 @@ def get_number(image):
 def clean(DF,columnname,thresh=50,times=1):
     for i in range(0,times):
         if range_param:
-        	df_cleaned=DF[DF[columnname]<float(sys.argv[3])]
-        	df_cleaned=df_cleaned[df_cleaned[columnname]>float(sys.argv[2])].reset_index()
+        	df_cleaned=DF[DF[columnname]<float(sys.argv[4])]
+        	df_cleaned=df_cleaned[df_cleaned[columnname]>float(sys.argv[3])].reset_index()
         else:
                 df_cleaned = DF.reset_index()
         #plt.plot(df_cleaned['Time (ms)'],df_cleaned[columnname],label='original '+ columnname)
@@ -116,11 +128,10 @@ for ind,p in enumerate(dict.keys()):
 
         #plt.imshow(cleaned)
         #plt.show()
-
-        #print(get_number(cleaned))
+	#print(get_number(cleaned))
+        
         line.append(get_number(cleaned))
         qf.append(line)
-
         nexxt=x
 
         while (get_number(cleaned)==''):
@@ -184,8 +195,8 @@ plt.xlabel('Time (ms)')
 plt.legend()
 fig = plt.gcf()
 fig.set_size_inches(18.5, 10.5)
-plt.savefig('Lateral'+'.png')
-cleanxlateral.to_csv('Lateral'+'.csv')
+plt.savefig(output_path+'/lateral.png')
+cleanxlateral.to_csv(output_path+'/lateral.csv')
 
 cleanylong=remove_giant_spike(y[['Time (ms)','Longitudinal']],'Longitudinal',5)
 plt.clf()
@@ -194,8 +205,8 @@ plt.legend()
 plt.xlabel('Time (ms)')
 fig = plt.gcf()
 fig.set_size_inches(18.5, 10.5)
-plt.savefig('Longitudinal'+'.png')
-cleanylong.to_csv('Longitudinal'+'.csv')
+plt.savefig(output_path+'/longitudinal.png')
+cleanylong.to_csv(output_path+'/longitudinal.csv')
 
 cleanzvert=remove_giant_spike(z[['Time (ms)','Vertical']],'Vertical',5)
 #cleanzvert=pd.DataFrame(scipy.signal.medfilt2d(cleanzvert[['Time (ms)', 'Vertical']]),columns=['Time (ms)', 'Vertical'])
@@ -205,5 +216,5 @@ plt.legend()
 plt.xlabel('Time (ms)')
 fig = plt.gcf()
 fig.set_size_inches(18.5, 10.5)
-plt.savefig('Vertical'+'.png')
-cleanzvert.to_csv('Vertical'+'.csv')
+plt.savefig(output_path+'/vertical.png')
+cleanzvert.to_csv(output_path+'/vertical.csv')
