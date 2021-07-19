@@ -25,14 +25,22 @@ extracted.
 # How to install and use this package
 
 Install dependencies:
+
   pip3 install cv2
+  
   pip3 install pytesseract
+  
   pip3 install matplotlib
+  
   pip3 install pandas
+  
   pip3 install numpy
+  
   pip3 install scipy
+  
 
 for mac installation: brew install tesseract
+
 for ubuntu/linux installation: sudo apt-get install tesseract-ocr
 
 Usage:
