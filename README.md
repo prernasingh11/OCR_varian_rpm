@@ -22,9 +22,9 @@ RPM system. With our method, an unlimited time period of movement can be analyze
 extracted.
 
 
-# How to install and use this package
+# How to install and use this repo
 
-Install dependencies:
+1. Install dependencies:
 
   pip3 install cv2
   
@@ -39,9 +39,9 @@ Install dependencies:
   pip3 install scipy
   
 
-for mac installation: brew install tesseract
+2. for mac installation: brew install tesseract or for ubuntu/linux installation: sudo apt-get install tesseract-ocr
 
-for ubuntu/linux installation: sudo apt-get install tesseract-ocr
+3. git pull this repo, or can be manually downloaded through github web interface
 
 Usage:
 go to directory that contains interactive_python_ocr.py. The path should end with /OCR_varian_rpm/src/varian_rpm_ocr
